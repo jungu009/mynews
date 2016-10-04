@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     /*
      * ToDo
      * 导航栏选项的功能
@@ -181,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
             return view;
         }
     }
-
 
     private void loadNewsBitmap(List<News> newses) {
         bitmaps = new ArrayList<>();
@@ -290,7 +288,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     private void initActionBar() {
         ActionBar mActionBar = getSupportActionBar();
         if(mActionBar != null) {
@@ -325,7 +322,6 @@ public class MainActivity extends AppCompatActivity {
             window.setNavigationBarColor(Color.TRANSPARENT);
         }
     }
-
 
     private void moveDrawerToTop() {
         mDrawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.drawer_main, null); // "null" is important.
