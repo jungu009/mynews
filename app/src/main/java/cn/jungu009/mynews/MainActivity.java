@@ -1,6 +1,7 @@
 package cn.jungu009.mynews;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -39,6 +40,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.jungu009.mynews.dao.INewsDao;
+import cn.jungu009.mynews.dao.INewsDaoImpl;
 import cn.jungu009.mynews.model.News;
 
 public class MainActivity extends AppCompatActivity {
@@ -55,12 +58,15 @@ public class MainActivity extends AppCompatActivity {
     private static final String KEJIURL = ADDR + "keji" + KEY;
     private static final String CAIJINGURL = ADDR + "caijing" + KEY;
     private static final String SHISHANGURL = ADDR + "shishang" + KEY;
+    private static final String FAVOURIT = "favourit";
+
 
     private NewsAdapter mAdapter;
     private DrawerLayout mDrawerLayout;
     private ListView newsList;
     private List<Bitmap> bitmaps = new ArrayList<>();
     private List<News> newses = new ArrayList<>();
+    private INewsDao newsDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
         newsList = (ListView)findViewById(R.id.list_item);
 
+        newsDao = new INewsDaoImpl(this);
         getNews(TOPURL);
 
     }
@@ -118,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                         navigateEvent("时尚", SHISHANGURL);
                         break;
                     case R.id.item_myfavorite:
-                        Toast.makeText(MainActivity.this, "收藏", Toast.LENGTH_LONG).show();
+                        navigateEvent("收藏", FAVOURIT);
                         break;
                     default:
                         break;
@@ -241,12 +248,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        @Override
-        protected String doInBackground(String ... params) {
+        private void loadNews(String uri) {
             HttpURLConnection conn = null;
-
             try {
-                URL url = new URL(params[0]);
+                URL url = new URL(uri);
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.setReadTimeout(6*1000);
@@ -256,12 +261,36 @@ public class MainActivity extends AppCompatActivity {
 
                     loadNewsBitmap(newses);
                 }
-
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             } finally {
                 if(conn != null)
                     conn.disconnect();
+            }
+        }
+
+        private void loadFavourit() {
+            Cursor cursor = newsDao.queryAllNews();
+            newses.removeAll(newses);
+
+            for(int i = 0; i < cursor.getCount(); i++) {
+                if(cursor.moveToNext()){
+                    newses.add(new News(cursor));
+                    loadNewsBitmap(newses);
+                }else {
+                    break;
+                }
+            }
+
+        }
+
+        @Override
+        protected String doInBackground(String ... params) {
+            String param = params[0];
+            if(!FAVOURIT.equals(param)){
+                loadNews(param);
+            } else {
+                loadFavourit();
             }
             return null;
         }

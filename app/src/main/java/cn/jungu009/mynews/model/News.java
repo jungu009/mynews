@@ -1,5 +1,6 @@
 package cn.jungu009.mynews.model;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -10,12 +11,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cn.jungu009.mynews.dao.NewsOpenHelper;
+
 /**
  * Created by jungu009 on 2016/10/1.
  *
  */
 
 public class News implements Parcelable {
+    private long id;
     private String title;
     private String date;
     private String authorName;
@@ -26,6 +30,15 @@ public class News implements Parcelable {
     private String realType;
 
     public News() {
+    }
+
+    public News(Cursor news) {
+        this.id = news.getLong(news.getColumnIndex(NewsOpenHelper.ID));
+        this.title = news.getString(news.getColumnIndex(NewsOpenHelper.TITLE));
+        this.date = news.getString(news.getColumnIndex(NewsOpenHelper.DATE));
+        this.authorName = news.getString(news.getColumnIndex(NewsOpenHelper.AUTHORNAME));
+        this.getThumbnailPicutres().add(news.getString(news.getColumnIndex(NewsOpenHelper.PICTUREURL)));
+        this.url = news.getString(news.getColumnIndex(NewsOpenHelper.URL));
     }
 
     public News(JSONObject news) throws JSONException {
@@ -39,6 +52,14 @@ public class News implements Parcelable {
         this.uniquekey = ""; //news.getString("uniquekey");
         this.type = ""; //news.getString("type");
         this.realType = ""; //news.getString("realtype");
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTitle() {

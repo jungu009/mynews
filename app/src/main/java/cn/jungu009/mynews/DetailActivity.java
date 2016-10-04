@@ -8,19 +8,25 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.Toast;
 
+import cn.jungu009.mynews.dao.INewsDao;
+import cn.jungu009.mynews.dao.INewsDaoImpl;
 import cn.jungu009.mynews.model.News;
 
 public class DetailActivity extends AppCompatActivity {
 
+    private INewsDao newsDao;
     private ActionBar mActionBar;
     private WebView mWebView;
+    private News news;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         initActionBar();
-        News news = getIntent().getParcelableExtra("news");
+        newsDao = new INewsDaoImpl(this);
+
+        news = getIntent().getParcelableExtra("news");
         setTitle(news.getTitle());
 
         mWebView = (WebView)findViewById(R.id.webview);
@@ -40,7 +46,8 @@ public class DetailActivity extends AppCompatActivity {
                 this.finish();
                 break;
             case R.id.item_favourite:
-                Toast.makeText(this, "收藏", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "收藏成功", Toast.LENGTH_LONG).show();
+                newsDao.addNews(news);
                 break;
             case R.id.item_share:
                 Toast.makeText(this, "分享", Toast.LENGTH_LONG).show();
