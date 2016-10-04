@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item android:id="@+id/item_favourite"
+        android:showAsAction="never"
+        android:icon="@mipmap/ic_launcher"
+        android:title="收藏"
+        tools:ignore="AppCompatResource" />
+
+    <item android:id="@+id/item_share"
+        android:showAsAction="never"
+        android:icon="@mipmap/ic_launcher"
+        android:title="分享"
+        tools:ignore="AppCompatResource" />
+</menu>

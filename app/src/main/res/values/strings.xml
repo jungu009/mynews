@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">mynews</string>
+    <string name="index">新闻头条</string>
+    <array name="category">
+        <item>头条</item>
+        <item>社会</item>
+        <item>国内</item>
+        <item>国际</item>
+        <item>娱乐</item>
+        <item>体育</item>
+        <item>军事</item>
+        <item>科技</item>
+        <item>财经</item>
+        <item>时尚</item>
+    </array>
+</resources>

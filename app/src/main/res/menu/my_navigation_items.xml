@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item android:id="@+id/item_toutiao"
+            android:icon="@mipmap/ic_launcher"
+            android:title="头条"/>
+
+        <item android:id="@+id/item_shehui"
+            android:icon="@mipmap/ic_launcher"
+            android:title="社会"/>
+
+        <item android:id="@+id/item_guonei"
+            android:icon="@mipmap/ic_launcher"
+            android:title="国内"/>
+
+        <item android:id="@+id/item_guoji"
+            android:icon="@mipmap/ic_launcher"
+            android:title="国际"/>
+
+        <item android:id="@+id/item_yule"
+            android:icon="@mipmap/ic_launcher"
+            android:title="娱乐"/>
+
+        <item android:id="@+id/item_tiyu"
+            android:icon="@mipmap/ic_launcher"
+            android:title="体育"/>
+
+        <item android:id="@+id/item_junshi"
+            android:icon="@mipmap/ic_launcher"
+            android:title="军事"/>
+
+        <item android:id="@+id/item_keji"
+            android:icon="@mipmap/ic_launcher"
+            android:title="科技"/>
+
+        <item android:id="@+id/item_caijing"
+            android:icon="@mipmap/ic_launcher"
+            android:title="财经"/>
+
+        <item android:id="@+id/item_shishang"
+            android:icon="@mipmap/ic_launcher"
+            android:title="时尚"/>
+    </group>
+
+    <item android:id="@+id/item_myfavorite"
+        android:icon="@mipmap/ic_launcher"
+        android:title="收藏"/>
+</menu>
