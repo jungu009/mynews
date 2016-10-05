@@ -6,9 +6,18 @@
     android:layout_height="match_parent"
     tools:context="cn.jungu009.mynews.DetailActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/detail_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#0ab"
+        android:logo="@drawable/app_icon"
+        />
+
     <WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/detail_toolbar"/>
 
 </RelativeLayout>

@@ -3,6 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/list_item"
     android:orientation="horizontal"
+    android:paddingTop="1dp"
+    android:paddingBottom="1dp"
+    android:paddingLeft="2dp"
+    android:paddingRight="2dp"
+    android:layout_marginTop="1dp"
+    android:layout_marginBottom="1dp"
+    android:layout_marginLeft="1dp"
+    android:layout_marginRight="1dp"
+    android:background="#FFF"
     >
 
     <ImageView
