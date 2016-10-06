@@ -3,7 +3,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="@dimen/navigate_header"
-    android:background="@drawable/bg"
+    android:background="#0AB"
+    android:elevation="4dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     >
 

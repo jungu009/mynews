@@ -1,6 +1,7 @@
 package cn.jungu009.mynews;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,9 +13,11 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -35,7 +38,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import cn.jungu009.mynews.dao.INewsDao;
 import cn.jungu009.mynews.dao.INewsDaoImpl;
@@ -57,17 +65,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String SHISHANGURL = ADDR + "shishang" + KEY;
     private static final String FAVOURIT = "favourit";
 
+    private static final String FIRST = "first";
+    private static final String CATEGORY = "category";
+
     private DrawerLayout mDrawerLayout;
     private List<Bitmap> bitmaps = new ArrayList<>();
     private List<News> newses = new ArrayList<>();
     private INewsDao newsDao;
-    private Toolbar mToolbar;
     private LinearLayout newsList;
     private TabLayout tabLayout;
+    private SharedPreferences settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        init();
         initStatusBar();
         setContentView(R.layout.drawer_main);
         initToolbar();
@@ -81,32 +93,87 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    // 第一次启动程序时 初始化数据
+    private void init() {
+        settings = getPreferences(MODE_PRIVATE);
+        boolean isFirst = settings.getBoolean(FIRST, true);
+        if(isFirst) {
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean(FIRST, false);
+            Set set = new HashSet<String>();
+            set.addAll(Arrays.asList(getResources().getStringArray(R.array.category)));
+            editor.putStringSet(CATEGORY, set);
+            editor.apply();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(Gravity.LEFT, true);
+                break;
+            case R.id.item_catogray_manage:
+                Toast.makeText(MainActivity.this, "分类管理", Toast.LENGTH_LONG).show();
+
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
+    private void setTabsText() {
+        Set set = settings.getStringSet(CATEGORY, null);
+        if(set != null){
+            List<String> categories = new ArrayList<>(set);
+            Collections.sort(categories, new Comparator<String>() {
+                @Override
+                public int compare(String o1, String o2) {
+                    // TODO tabs排序
+                    return 0;
+                }
+            });
+            for(int i = 0; i < categories.size(); i++) {
+                tabLayout.addTab(tabLayout.newTab().setText(categories.get(i)));
+            }
+        }
+    }
+
     private void initTabs() {
-        // TODO 优化Tabs
         tabLayout = (TabLayout)findViewById(R.id.tabs);
-        tabLayout.addTab(tabLayout.newTab().setText("头条"));
-        tabLayout.addTab(tabLayout.newTab().setText("社会"));
-        tabLayout.addTab(tabLayout.newTab().setText("国内"));
-        tabLayout.addTab(tabLayout.newTab().setText("国际"));
+        setTabsText();
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                switch(tab.getPosition()) {
-                    case 0:
-                        navigateEvent("头条", TOPURL);
-                        break;
-                    case 1:
-                        navigateEvent("社会", SHEHUIURL);
-                        break;
-                    case 2:
-                        navigateEvent("国内", GUONEIURL);
-                        break;
-                    case 3:
-                        navigateEvent("国际", GUOJIURL);
-                        break;
-                    default:
-                        Toast.makeText(MainActivity.this, "tab error", Toast.LENGTH_SHORT).show();
-                        break;
+                String text = tab.getText().toString();
+                if("头条".equals(text)) {
+                    navigateEvent("头条", TOPURL);
+                } else if("社会".equals(text)) {
+                    navigateEvent("社会", SHEHUIURL);
+                } else if("国际".equals(text)) {
+                    navigateEvent("国际", GUOJIURL);
+                } else if("国内".equals(text)) {
+                    navigateEvent("国内", GUONEIURL);
+                } else if("娱乐".equals(text)) {
+                    navigateEvent("娱乐", YULEURL);
+                } else if("体育".equals(text)) {
+                    navigateEvent("体育", TIYUURL);
+                } else if("军事".equals(text)) {
+                    navigateEvent("军事", JUNSHIURL);
+                } else if("科技".equals(text)) {
+                    navigateEvent("科技", KEJIURL);
+                } else if("财经".equals(text)) {
+                    navigateEvent("财经", CAIJINGURL);
+                } else if("时尚".equals(text)) {
+                    navigateEvent("时尚", SHISHANGURL);
                 }
             }
 
@@ -122,9 +189,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    /*
-     * 导航栏选项的功能
-     */
     private void initNavigate() {
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         NavigationView mNavigationView = (NavigationView)findViewById(R.id.navigation);
@@ -132,40 +196,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-//////                    case R.id.item_toutiao:
-//////                        navigateEvent("头条", TOPURL);
-//////                        break;
-//////                    case R.id.item_shehui:
-//////                        navigateEvent("社会", SHEHUIURL);
-//////                        break;
-//////                    case R.id.item_guonei:
-//////                        navigateEvent("国内", GUONEIURL);
-//////                        break;
-//////                    case R.id.item_guoji:
-//////                        navigateEvent("国际", GUOJIURL);
-//////                        break;
-//////                    case R.id.item_yule:
-//////                        navigateEvent("娱乐", YULEURL);
-//////                        break;
-//////                    case R.id.item_tiyu:
-//////                        navigateEvent("体育", TIYUURL);
-//////                        break;
-//////                    case R.id.item_junshi:
-//////                        navigateEvent("军事", JUNSHIURL);
-//////                        break;
-//////                    case R.id.item_keji:
-//////                        navigateEvent("科技", KEJIURL);
-//////                        break;
-//////                    case R.id.item_caijing:
-//////                        navigateEvent("财经", CAIJINGURL);
-//////                        break;
-//////                    case R.id.item_shishang:
-//////                        navigateEvent("时尚", SHISHANGURL);
-//////                        break;
                     case R.id.item_myfavorite:
                         navigateEvent("收藏", FAVOURIT);
                         mDrawerLayout.closeDrawer(Gravity.LEFT, true);
-                        // TODO 要让Tabs隐藏 出去tab的选择。。。
                         break;
                     default:
                         break;
@@ -185,7 +218,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
         getNews(url);
         setTitle(msg);
-//        mDrawerLayout.closeDrawer(Gravity.LEFT, true);
     }
 
     private void loadNewsBitmap(List<News> newses) {
@@ -316,7 +348,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     img.setImageBitmap(bitmaps.get(i));
                 title.setText(news.getTitle());
                 date.setText(news.getDate());
-
+                view.setElevation(4);
                 view.setOnClickListener(MainActivity.this);
                 newsList.addView(view, i);
 
@@ -326,21 +358,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initToolbar() {
-        // TODO 美化toolbar 添加menu管理用户的喜好 增删tab中的选项
-        mToolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setNavigationIcon(R.mipmap.ic_menu_black_24dp);
         setSupportActionBar(mToolbar);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(Gravity.LEFT, true);
-                break;
-            default:
-                break;
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        return true;
     }
 
     private void initStatusBar() {

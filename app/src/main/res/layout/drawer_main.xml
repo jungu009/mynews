@@ -20,8 +20,11 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize"
-                android:logo="@mipmap/ic_launcher"
-                android:background="#0ab"
+                android:elevation="4dp"
+                app:contentInsetStartWithNavigation="0dp"
+                android:background="#0AB"
+                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:layout_scrollFlags="scroll|enterAlways"
                 />
 
@@ -29,7 +32,7 @@
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#0ab"
+                android:background="#0AB"
                 app:tabGravity="center"
                 app:tabMode="scrollable"
                 >

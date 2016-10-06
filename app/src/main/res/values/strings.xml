@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">mynews</string>
-    <string name="index">新闻头条</string>
+    <string name="index">每日新闻</string>
     <array name="category">
         <item>头条</item>
         <item>社会</item>
