@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_category"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="cn.jungu009.mynews.ui.CategoryActivity">
+
+    <CheckBox
+        android:id="@+id/checkbox_toutiao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="头条" />
+
+    <CheckBox
+        android:id="@+id/checkbox_shehui"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="社会" />
+
+    <CheckBox
+        android:id="@+id/checkbox_guonei"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="国内" />
+
+    <CheckBox
+        android:id="@+id/checkbox_guoji"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="国际" />
+
+    <CheckBox
+        android:id="@+id/checkbox_caijing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="财经" />
+
+    <CheckBox
+        android:id="@+id/checkbox_keji"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="科技" />
+
+    <CheckBox
+        android:id="@+id/checkbox_shishang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="时尚" />
+
+    <CheckBox
+        android:id="@+id/checkbox_yule"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="娱乐" />
+
+    <CheckBox
+        android:id="@+id/checkbox_junshi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="军事" />
+
+    <CheckBox
+        android:id="@+id/checkbox_tiyu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="体育" />
+</LinearLayout>

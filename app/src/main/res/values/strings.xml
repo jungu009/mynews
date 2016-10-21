@@ -13,4 +13,5 @@
         <item>财经</item>
         <item>时尚</item>
     </array>
+    <string name="title_activity_favorite">FavoriteActivity</string>
 </resources>

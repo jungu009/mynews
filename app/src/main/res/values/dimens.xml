@@ -5,4 +5,5 @@
     <dimen name="navigate_header">180dp</dimen>
     <dimen name="list_item">75dp</dimen>
     <dimen name="bar_height">56dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>
