@@ -32,12 +32,12 @@ public class DetailActivity extends AppCompatActivity {
     private WebView mWebView;
     private News news;
     private IWXAPI api;
-    private static final String APPID = "wx4080223c95cbd59d";
+    private static final String APPID = "wx0a8c963910e5e8b6";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        api = WXAPIFactory.createWXAPI(this, APPID, true);
+        api = WXAPIFactory.createWXAPI(this, APPID, false);
         api.registerApp(APPID);
 
         setContentView(R.layout.activity_detail);
@@ -68,8 +68,7 @@ public class DetailActivity extends AppCompatActivity {
                 newsDao.addNews(news);
                 break;
             case R.id.item_share:
-                boolean bool = shareWebpage(news);
-                Toast.makeText(this, "分享 " + bool, Toast.LENGTH_LONG).show();
+                shareWebpage(news);
                 break;
             default:
                 break;
@@ -86,14 +85,15 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    public boolean shareWebpage(News news) {
+    public void shareWebpage(News news) {
         WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = news.getUrl();
-
+//        webpage.webpageUrl = news.getUrl();
+        webpage.webpageUrl = "http://www.baidu.com";
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = news.getTitle();
         msg.description = "新闻描述";
-        Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.drawable.app_icon);
+//        Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.drawable.app_icon); // 微信对图片是有要求的 这个图片不过关
+        Bitmap thumb = BitmapFactory.decodeResource(getResources(), android.R.drawable.ic_btn_speak_now);
         msg.thumbData = WXUtil.bmpToByteArray(thumb, true);
 
         SendMessageToWX.Req req = new SendMessageToWX.Req();
@@ -101,7 +101,7 @@ public class DetailActivity extends AppCompatActivity {
         req.message = msg;
         req.scene = SendMessageToWX.Req.WXSceneTimeline;
 
-        return api.sendReq(req);
+        api.sendReq(req);
     }
 
     private String buildTransaction(final String type) {
